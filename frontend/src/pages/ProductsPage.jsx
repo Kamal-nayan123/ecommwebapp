@@ -24,43 +24,47 @@ const ProductsPage = () => {
   });
 
   if (status === 'loading') return <Loading />;
-  if (status === 'failed') return <div>Error: {error}</div>;
+  if (status === 'failed') return <div className="text-center py-10 text-red-500">Error: {error}</div>;
 
   return (
-    <div>
-      <div className="mb-8 space-y-4">
-        <input
-          type="text"
-          placeholder="Search products..."
-          className="w-full p-2 border rounded-md"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+    <div className="bg-primary-50 py-12">
+      <div className="container mx-auto px-4">
+        <h1 className="text-4xl font-bold text-secondary-900 text-center mb-12">Our Products</h1>
         
-        <select
-          className="w-full p-2 border rounded-md"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        >
-          <option value="all">All Categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="clothing">Clothing</option>
-          <option value="books">Books</option>
-          {/* Add more categories as needed */}
-        </select>
-      </div>
+        <div className="mb-10 flex flex-col md:flex-row gap-6">
+          <input
+            type="text"
+            placeholder="Search for products..."
+            className="flex-grow px-4 py-3 border border-secondary-200 rounded-full focus:outline-none focus:ring-2 focus:ring-accent-500 text-secondary-900"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map(product => (
-          <ProductCard key={product._id} product={product} />
-        ))}
-      </div>
-
-      {filteredProducts.length === 0 && (
-        <div className="text-center py-10">
-          <p className="text-gray-600">No products found matching your criteria</p>
+          <select
+            className="px-4 py-3 border border-secondary-200 rounded-full focus:outline-none focus:ring-2 focus:ring-accent-500 text-secondary-900 bg-white"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="all">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="clothing">Clothing</option>
+            <option value="books">Books</option>
+            {/* Add more categories as needed */}
+          </select>
         </div>
-      )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {filteredProducts.map(product => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-secondary-600 text-lg">No products found matching your criteria.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
