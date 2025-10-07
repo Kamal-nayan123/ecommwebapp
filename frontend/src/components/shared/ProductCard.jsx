@@ -17,9 +17,9 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="group relative">
+    <div className="group relative border border-transparent hover:border-secondary-200 p-4 rounded-lg transition-all duration-300 hover:shadow-lg">
       {/* Image Container */}
-      <div className="aspect-[3/4] overflow-hidden bg-gray-50">
+      <div className="aspect-[3/4] overflow-hidden bg-secondary-50 rounded-md">
         <Link to={`/product/${product._id}`}>
           <img 
             src={product.image} 
@@ -31,14 +31,14 @@ const ProductCard = ({ product }) => {
         {/* Stock Status */}
         {product.stock < 5 && product.stock > 0 && (
           <div className="absolute top-2 left-2">
-            <span className="bg-white/90 backdrop-blur-sm px-2 py-1 text-xs uppercase tracking-wider">
+            <span className="bg-primary-50/90 backdrop-blur-sm px-2 py-1 text-xs uppercase tracking-wider rounded-full text-secondary-800">
               Only {product.stock} left
             </span>
           </div>
         )}
         {product.stock === 0 && (
-          <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
-            <span className="text-sm uppercase tracking-wider">Out of Stock</span>
+          <div className="absolute inset-0 bg-primary-100/60 backdrop-blur-sm flex items-center justify-center rounded-md">
+            <span className="text-sm uppercase tracking-wider text-secondary-900 font-semibold">Out of Stock</span>
           </div>
         )}
 
@@ -46,8 +46,8 @@ const ProductCard = ({ product }) => {
         {product.stock > 0 && (
           <button
             onClick={addToCart}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-2 text-xs uppercase tracking-wider
-                     opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:text-black"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-accent-800 text-white px-6 py-2 text-xs uppercase tracking-wider rounded-full
+                     opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-accent-900"
           >
             Add to Cart
           </button>
@@ -55,28 +55,28 @@ const ProductCard = ({ product }) => {
       </div>
       
       {/* Product Info */}
-      <div className="mt-4 space-y-1">
-        <Link to={`/product/${product._id}`} className="block group-hover:text-gray-600 transition-colors">
-          <h3 className="text-sm font-medium">{product.name}</h3>
+      <div className="mt-4 text-center">
+        <Link to={`/product/${product._id}`} className="block group-hover:text-accent-800 transition-colors">
+          <h3 className="text-sm font-medium text-secondary-900">{product.name}</h3>
         </Link>
         
-        <p className="text-sm text-gray-500 line-clamp-1">
+        <p className="text-sm text-secondary-600 mt-1 line-clamp-1">
           {product.description}
         </p>
         
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">
+        <div className="flex items-center justify-center gap-2 mt-2">
+          <span className="text-sm font-semibold text-secondary-900">
             ${product.price.toFixed(2)}
           </span>
           {product.originalPrice > product.price && (
-            <span className="text-xs text-gray-400 line-through">
+            <span className="text-xs text-secondary-400 line-through">
               ${product.originalPrice.toFixed(2)}
             </span>
           )}
         </div>
 
         {product.category && (
-          <span className="inline-block text-xs text-gray-500">
+          <span className="inline-block bg-secondary-100 text-secondary-600 text-xs px-2 py-1 rounded-full mt-2">
             {product.category}
           </span>
         )}

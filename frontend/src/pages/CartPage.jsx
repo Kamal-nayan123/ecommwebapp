@@ -21,26 +21,17 @@ const CartPage = () => {
 
   const handleCheckout = async () => {
     if (!isSignedIn) {
-      // Redirect to sign in if not authenticated
       return navigate('/sign-in');
     }
 
     try {
-      // Create order from cart items
       await dispatch(createOrder({
         userId: user.id,
-        items: items.map(item => ({
-          productId: item.id,
-          quantity: item.quantity
-        })),
+        items: items.map(item => ({ productId: item.id, quantity: item.quantity })),
         total: total,
         status: 'pending'
       })).unwrap();
-
-      // Clear the cart after successful order
       dispatch(clearCart());
-      
-      // Redirect to orders page
       navigate('/orders');
     } catch (error) {
       console.error('Checkout failed:', error);
@@ -49,11 +40,11 @@ const CartPage = () => {
 
   if (items.length === 0) {
     return (
-      <div className="text-center py-10">
-        <h2 className="text-2xl font-semibold mb-4">Your Cart is Empty</h2>
+      <div className="text-center py-20 bg-primary-50">
+        <h2 className="text-3xl font-bold text-secondary-900 mb-6">Your Cart is Empty</h2>
         <button
           onClick={() => navigate('/products')}
-          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+          className="bg-accent-800 text-white px-8 py-3 rounded-full font-semibold hover:bg-accent-900 transition-colors shadow-md"
         >
           Continue Shopping
         </button>
@@ -62,57 +53,61 @@ const CartPage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6">Shopping Cart</h2>
-      
-      <div className="space-y-4">
-        {items.map(item => (
-          <div key={item.id} className="flex items-center p-4 border rounded-lg">
-            <div className="flex-grow">
-              <h3 className="font-semibold">{item.name}</h3>
-              <p className="text-gray-600">${item.price}</p>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center border rounded">
-                <button
-                  className="px-3 py-1 hover:bg-gray-100"
-                  onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                >
-                  -
-                </button>
-                <span className="px-3">{item.quantity}</span>
-                <button
-                  className="px-3 py-1 hover:bg-gray-100"
-                  onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                >
-                  +
-                </button>
-              </div>
-              
-              <button
-                onClick={() => handleRemoveItem(item.id)}
-                className="text-red-500 hover:text-red-600"
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="bg-primary-50 py-12">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <h1 className="text-4xl font-bold text-secondary-900 text-center mb-12">Your Shopping Cart</h1>
 
-      <div className="mt-8 p-4 border rounded-lg">
-        <div className="flex justify-between mb-4">
-          <span className="font-semibold">Total:</span>
-          <span className="font-semibold">${total.toFixed(2)}</span>
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="space-y-6">
+            {items.map(item => (
+              <div key={item.id} className="flex flex-col sm:flex-row items-center justify-between p-4 border-b border-secondary-200">
+                <div className="flex-grow mb-4 sm:mb-0">
+                  <h3 className="font-semibold text-lg text-secondary-900">{item.name}</h3>
+                  <p className="text-secondary-600">${item.price.toFixed(2)}</p>
+                </div>
+
+                <div className="flex items-center space-x-6">
+                  <div className="flex items-center border border-secondary-200 rounded-full">
+                    <button
+                      className="px-4 py-2 text-secondary-800 hover:bg-secondary-100 rounded-l-full transition-colors"
+                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    >
+                      -
+                    </button>
+                    <span className="px-4 text-secondary-900 font-semibold">{item.quantity}</span>
+                    <button
+                      className="px-4 py-2 text-secondary-800 hover:bg-secondary-100 rounded-r-full transition-colors"
+                      onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => handleRemoveItem(item.id)}
+                    className="text-red-500 hover:text-red-700 font-semibold transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-secondary-200">
+            <div className="flex justify-between items-center mb-6">
+              <span className="font-semibold text-xl text-secondary-900">Total:</span>
+              <span className="font-bold text-2xl text-secondary-900">${total.toFixed(2)}</span>
+            </div>
+
+            <button
+              onClick={handleCheckout}
+              className="w-full bg-accent-800 text-white py-3 rounded-full font-semibold text-lg hover:bg-accent-900 transition-colors shadow-md"
+            >
+              {isSignedIn ? 'Proceed to Checkout' : 'Sign in to Checkout'}
+            </button>
+          </div>
         </div>
-        
-        <button
-          onClick={handleCheckout}
-          className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
-        >
-          {isSignedIn ? 'Proceed to Checkout' : 'Sign in to Checkout'}
-        </button>
       </div>
     </div>
   );
